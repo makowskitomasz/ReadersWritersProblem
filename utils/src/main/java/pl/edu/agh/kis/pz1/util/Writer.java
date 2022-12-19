@@ -1,6 +1,4 @@
 package pl.edu.agh.kis.pz1.util;
-
-import javax.print.DocFlavor;
 import java.text.MessageFormat;
 import java.util.Random;
 
@@ -15,12 +13,8 @@ import org.apache.logging.log4j.Logger;
 public class Writer implements Runnable{
     Library library;
     String id;
-
     Random random = new Random();
-
     private static final Logger logger = LogManager.getLogger(Writer.class);
-
-
     /**
      * Constructor of Writer Class
      *
@@ -31,8 +25,6 @@ public class Writer implements Runnable{
         this.library = library;
         this.id = id;
     }
-
-
     /**
      * Method that overrides run method.
      * It defines the behaviour of the writer who entered the library
@@ -43,17 +35,15 @@ public class Writer implements Runnable{
     public void run(){
         try{
             while(true){
-                logger.info(MessageFormat.format("{0} {1} is waiting.", Thread.currentThread(), id));
-                library.queue.add(Thread.currentThread());
-                library.startWriting();
+                    logger.info(MessageFormat.format("{0} is waiting.", id));
+                    library.queue.add(Thread.currentThread());
+                    library.startWriting();
+                    logger.info(MessageFormat.format("{0} starts writing. Number of writers: {1}, Number of readers: {2}",
+                            id, library.getNumberOfWriters(), library.getNumberOfReaders()));
+                    Thread.sleep(random.nextInt(2000) + 1000);
+                    library.stopWriting();
+                    logger.info(MessageFormat.format("{0} stopped writing", id));
 
-                logger.info(MessageFormat.format("{0} {1} starts writing. Number of writers: {2}, Number of readers: {3}",
-                        Thread.currentThread(), id, library.getNumberOfWriters(), library.getNumberOfReaders()));
-
-                Thread.sleep(random.nextInt(2000) + 2000);
-
-                library.stopWriting();
-                logger.info(MessageFormat.format("{0} {1} stopped writing", Thread.currentThread(), id));
             }
         } catch(InterruptedException e){
             logger.trace(e);

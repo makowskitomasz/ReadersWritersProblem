@@ -10,14 +10,11 @@ import java.util.Random;
  * Class that defines Reader
  * @author tomaszmakowski
  */
-public class Reader implements Runnable{
+public class Reader implements Runnable {
     Library library;
     String id;
-
     Random random = new Random();
-
     private static final Logger logger = LogManager.getLogger(Reader.class);
-
     /**
      * Constructor of Reader Class
      *
@@ -28,8 +25,6 @@ public class Reader implements Runnable{
         this.library = library;
         this.id = id;
     }
-
-
     /**
      * Method that overrides run method.
      * It defines the behaviour of the reader who entered the library
@@ -40,17 +35,17 @@ public class Reader implements Runnable{
     public void run(){
         try{
             while(true){
-                logger.info(MessageFormat.format("{0} {1} is waiting.", Thread.currentThread(), id));
-                library.queue.add(Thread.currentThread());
-                library.startReading();
+                if(logger.isInfoEnabled()) {
+                    logger.info(MessageFormat.format("{0} is waiting.", id));
+                    library.queue.add(Thread.currentThread());
+                    library.startReading();
+                    logger.info(MessageFormat.format("{0} starts reading. Number of writers: {1}, Number of readers: {2}.",
+                            id, library.getNumberOfWriters(), library.getNumberOfReaders()));
+                    Thread.sleep(random.nextInt(2000) + 1000);
+                    library.stopReading();
+                    logger.info(MessageFormat.format("{0} stopped reading", id));
+                }
 
-                logger.info(MessageFormat.format("{0} {1} starts reading. Number of writers: {2}, Number of readers: {3}",
-                        Thread.currentThread(), id, library.getNumberOfWriters(), library.getNumberOfReaders()));
-
-                Thread.sleep(random.nextInt(2000) + 2000);
-
-                library.stopReading();
-                logger.info(MessageFormat.format("{0} {1} stopped reading", Thread.currentThread(), id));
             }
         } catch(InterruptedException e){
             logger.trace(e);

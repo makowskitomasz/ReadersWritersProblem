@@ -5,7 +5,7 @@
   <artifactId>multi-module</artifactId>
   <version>1.0</version>
 
-  <name>Przyklad - aplikacja wielomodulowa</name>
+  <name>Readers Writers Problem</name>
   <packaging>pom</packaging>
 
   <!-- Dodane przez pskrzynski -->
@@ -58,5 +58,52 @@
             </plugins>
         </pluginManagement>
     </build>
+    <profiles>
+        <profile>
+            <id>sonar1</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>jacoco-initialize</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>jacoco-site</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!-- Optional URL to server. Default value is http://localhost:9000 -->
+                <sonar.host.url>
+                    http://localhost:43210
+                </sonar.host.url>
+                <sonar.login>
+                    9c9caee31281ff6f80ccabbb03cd33c6a54f2c5c
+                </sonar.login>
+            </properties>
+        </profile>
+    </profiles>
+
 
 </project>

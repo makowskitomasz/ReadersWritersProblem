@@ -11,9 +11,9 @@ import java.util.Queue;
  */
 public class Library {
     Queue<Thread> queue;
-    private int numberOfWriters = 0, numberOfReaders = 0;
+    private int numberOfWriters = 0;
+    private int numberOfReaders = 0;
     private static final Logger logger = LogManager.getLogger(Library.class);
-
     /**
      * Constructor of Library Class
      * @param queue queue of all threads in the program
@@ -21,7 +21,6 @@ public class Library {
     public Library(Queue<Thread> queue){
         this.queue = queue;
     }
-
     /**
      *
      * @return getter of number of Writers in the Library
@@ -29,14 +28,12 @@ public class Library {
     public int getNumberOfWriters(){
         return numberOfWriters;
     }
-
     /**
      * @return getter of number of Readers in the Library
      */
     public int getNumberOfReaders(){
         return numberOfReaders;
     }
-
     /**
      *
      * @param numberOfWriters the number of Writers in Library chose by the user
@@ -44,7 +41,6 @@ public class Library {
     public void setNumberOfWriters(int numberOfWriters){
         this.numberOfWriters = numberOfWriters;
     }
-
     /**
      *
      * @param numberOfReaders the number of Readers in Library chose by the user
@@ -52,7 +48,6 @@ public class Library {
     public void setNumberOfReaders(int numberOfReaders){
         this.numberOfReaders = numberOfReaders;
     }
-
     /**
      * Allows Writer to enter the Library if it meets the conditions
      */
@@ -69,7 +64,6 @@ public class Library {
             Thread.currentThread().interrupt();
         }
     }
-
     /**
      * Decreases the number of Writers in Library (numberOfWriters = 0) and informs the other
      */
@@ -77,7 +71,6 @@ public class Library {
         numberOfWriters -= 1;
         notifyAll();
     }
-
     /**
      * Allows Reader to enter the library if it meets the conditions
      */
@@ -95,7 +88,6 @@ public class Library {
             Thread.currentThread().interrupt();
         }
     }
-
     /**
      * Decreases the number of Readers in Library and informs the other
      */

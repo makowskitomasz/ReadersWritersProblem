@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Reader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Modul na klasy uzytkowe</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1.util</a> &gt; <span class="el_source">Reader.java</span></div><h1>Reader.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1.util;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import java.text.MessageFormat;
+import java.util.Random;
+
+
+/**
+ * Class that defines Reader
+ * @author tomaszmakowski
+ */
+public class Reader implements Runnable {
+    Library library;
+    String id;
+<span class="fc" id="L16">    Random random = new Random();</span>
+<span class="fc" id="L17">    private static final Logger logger = LogManager.getLogger(Reader.class);</span>
+    /**
+     * Constructor of Reader Class
+     *
+     * @param library object of class Library
+     * @param id unique id of each person in the Library
+     */
+<span class="fc" id="L24">    public Reader(Library library, String id){</span>
+<span class="fc" id="L25">        this.library = library;</span>
+<span class="fc" id="L26">        this.id = id;</span>
+<span class="fc" id="L27">    }</span>
+    /**
+     * Method that overrides run method.
+     * It defines the behaviour of the reader who entered the library
+     * And gives the information to output
+     */
+    @SuppressWarnings(&quot;InfiniteLoopStatement&quot;)
+    @Override
+    public void run(){
+        try{
+            while(true){
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">                if(logger.isInfoEnabled()) {</span>
+<span class="fc" id="L39">                    logger.info(MessageFormat.format(&quot;{0} is waiting.&quot;, id));</span>
+<span class="fc" id="L40">                    library.queue.add(Thread.currentThread());</span>
+<span class="fc" id="L41">                    library.startReading();</span>
+<span class="fc" id="L42">                    logger.info(MessageFormat.format(&quot;{0} starts reading. Number of writers: {1}, Number of readers: {2}.&quot;,</span>
+<span class="fc" id="L43">                            id, library.getNumberOfWriters(), library.getNumberOfReaders()));</span>
+<span class="fc" id="L44">                    Thread.sleep(random.nextInt(2000) + 1000);</span>
+<span class="fc" id="L45">                    library.stopReading();</span>
+<span class="fc" id="L46">                    logger.info(MessageFormat.format(&quot;{0} stopped reading&quot;, id));</span>
+                }
+
+            }
+<span class="fc" id="L50">        } catch(InterruptedException e){</span>
+<span class="fc" id="L51">            logger.trace(e);</span>
+<span class="fc" id="L52">            Thread.currentThread().interrupt();</span>
+        }
+<span class="fc" id="L54">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
